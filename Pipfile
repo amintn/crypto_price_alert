@@ -6,6 +6,7 @@ name = "pypi"
 [packages]
 django = "*"
 email-normalize = "*"
+django-environ = "*"
 
 [dev-packages]
 ipython = "*"
