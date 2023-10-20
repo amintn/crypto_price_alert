@@ -65,6 +65,12 @@ class AlertUser(AbstractBaseUser, PermissionsMixin):
         self.full_clean()
         return super().save(*args, **kwargs)
 
+    def send_alert(self, message):
+        """Send an alert to user based on their corresponding fields:
+        -sms_alert,
+        -email_alert,
+        -telegram_message_alert"""
+
 
 class Rule(models.Model):
     RELATION_TO_TARGET_PRICE = (
