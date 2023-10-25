@@ -4,7 +4,6 @@ from django.contrib.auth.models import PermissionsMixin
 from django.core.exceptions import ValidationError
 
 from alert_user.validators import iran_mobile_phone_number_validator
-from exchange.models import SymbolPair
 
 from email_normalize import normalize as normalize_email
 
@@ -70,24 +69,3 @@ class AlertUser(AbstractBaseUser, PermissionsMixin):
         -sms_alert,
         -email_alert,
         -telegram_message_alert"""
-
-
-class Rule(models.Model):
-    RELATION_TO_TARGET_PRICE = (
-        ("<=", "Alert if current_price <= target_price"),
-        (">=", "Alert if current_price >= target_price"),
-    )
-    alert_user = models.ForeignKey(AlertUser, on_delete=models.CASCADE)
-    symbol_pair = models.ForeignKey(SymbolPair, on_delete=models.PROTECT)
-    action = models.CharField(max_length=2, choices=RELATION_TO_TARGET_PRICE)
-    target_price = models.DecimalField(max_digits=14, decimal_places=8)
-
-    def __str__(self):
-        return f"{str(self.symbol_pair)} {self.action} {self.target_price}"
-
-    def __repr__(self):
-        return f"{self.alert_user.email}-{str(self)}"
-
-    def is_reached(self) -> bool:
-        """Returns True if this rule has reached its target price, returns False otherwise"""
-        return eval(f"{self.symbol_pair.current_price} {self.action} {self.target_price}")

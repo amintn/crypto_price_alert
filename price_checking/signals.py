@@ -1,7 +1,7 @@
 from django.db.models.signals import post_init
 from django.dispatch import receiver
 
-from exchange.models import Exchange
+from price_checking.models import Exchange
 
 
 @receiver(post_init, sender=Exchange)
